@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 const nacl = require("tweetnacl");
 
-import {
+const {
   COMMANDS,
   PING_REPLY,
   GAME_ADDRESS_REPLY,
@@ -10,7 +10,7 @@ import {
   HELP_MESSAGE,
   returnTokenPrice,
   returnTokenSupply,
-} from "./utils/replies";
+} = require("./utils/replies");
 
 const INTERACTIONS_URL = `https://discord.com/api/v10/interactions`;
 
@@ -90,6 +90,13 @@ exports.handler = async (event) => {
         ...initialReplyObject,
         data: { content: PING_REPLY },
       };
+
+      const nextReplyObject = {
+        // Note the absence of statusCode
+        type: 4, // This type stands for answer with invocation shown
+        data: { content: "bar" },
+      };
+      console.log({ replyObject, nextReplyObject });
       await axios.post(interactionUrl, replyObject);
       return JSON.stringify(replyObject);
     case COMMANDS.PRICE:

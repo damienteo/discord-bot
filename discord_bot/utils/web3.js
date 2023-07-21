@@ -1,6 +1,6 @@
-import { ethers } from "ethers";
+const { ethers } = require("ethers");
 
-import { formatTokenValue, formatNumberValue } from "./common";
+const { formatTokenValue, formatNumberValue } = require("./common");
 
 require("dotenv").config();
 
@@ -20,7 +20,7 @@ const gameTokenAddress = GAME_TOKEN_CONTRACT_ADDRESS;
 const usdTokenAddress = USD_TOKEN_ADDRESS;
 const quoterAddress = UNISWAP_V3_QUOTER_ADDRESS;
 
-export const getTotalSupply = async () => {
+const getTotalSupply = async () => {
   const tokenContract = new ethers.Contract(
     gameTokenAddress,
     ["function totalSupply() view returns (uint256)"],
@@ -32,7 +32,7 @@ export const getTotalSupply = async () => {
 };
 
 // https://docs.uniswap.org/sdk/v3/guides/quoting
-export const getGameTokenPrice = async () => {
+const getGameTokenPrice = async () => {
   // We already know, based on the pool address,
   // which token is token0 and token1
   // So there is no need for additional calls to get token decimals
@@ -59,4 +59,9 @@ export const getGameTokenPrice = async () => {
   const amountOut = ethers.formatUnits(quotedAmountOut, tokenDecimals0);
 
   return amountOut;
+};
+
+module.exports = {
+  getTotalSupply,
+  getGameTokenPrice,
 };

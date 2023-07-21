@@ -1,12 +1,12 @@
-import cache from "memory-cache";
+const cache = require("memory-cache");
 
-import { getTotalSupply, getGameTokenPrice } from "./web3";
+const { getTotalSupply, getGameTokenPrice } = require("./web3");
 
 require("dotenv").config();
 
 const { GAME_TOKEN_CONTRACT_ADDRESS } = process.env;
 
-export const COMMANDS = {
+const COMMANDS = {
   PING: "ping",
   ADDRESS: "address",
   PRICE: "price",
@@ -16,12 +16,12 @@ export const COMMANDS = {
   HELP: "help",
 };
 
-export const CACHE_KEYS = {
+const CACHE_KEYS = {
   PRICE: "price",
   SUPPLY: "supply",
 };
 
-export const tokenCommands = [
+const tokenCommands = [
   { command: COMMANDS.ADDRESS, description: "Get the game token address" },
   {
     command: COMMANDS.PRICE,
@@ -33,7 +33,7 @@ export const tokenCommands = [
   },
 ];
 
-export const gameCommands = [
+const gameCommands = [
   {
     command: COMMANDS.INSTALL,
     description: "Get the links to install the game",
@@ -45,18 +45,18 @@ export const gameCommands = [
 ];
 
 // Adding bot
-export const INTRO_MESSAGE =
+const INTRO_MESSAGE =
   "Hi, I am the official Mythic Odyssey Telegram Helper Bot";
 
 // Ping
-export const PING_REPLY = "Mythic Odyssey Helper Bot is up!";
+const PING_REPLY = "Mythic Odyssey Helper Bot is up!";
 
 // Game Token Address
 const nextTokenAddress = `[${GAME_TOKEN_CONTRACT_ADDRESS}](https://mumbai.polygonscan.com/address/${GAME_TOKEN_CONTRACT_ADDRESS})`;
-export const GAME_ADDRESS_REPLY = `The game token address is ${nextTokenAddress}`;
+const GAME_ADDRESS_REPLY = `The game token address is ${nextTokenAddress}`;
 
 // Price
-export const returnTokenPrice = async () => {
+const returnTokenPrice = async () => {
   const cachedPrice = cache.get(CACHE_KEYS.PRICE);
   if (cachedPrice) {
     return `The current price is US$${cachedPrice}`;
@@ -70,7 +70,7 @@ export const returnTokenPrice = async () => {
 };
 
 // Supply
-export const returnTokenSupply = async () => {
+const returnTokenSupply = async () => {
   const cachedSupply = cache.get(CACHE_KEYS.SUPPLY);
   if (cachedSupply) {
     return `The total supply is ${cachedSupply}`;
@@ -84,10 +84,10 @@ export const returnTokenSupply = async () => {
 };
 
 // Install links
-export const INSTALL_LINKS = `You can install the game at the following links:\n\n🤖 Android: [Play Store Link to be inserted]\n\n🍎 Apple: [Apple Link to be inserted] `;
+const INSTALL_LINKS = `You can install the game at the following links:\n\n🤖 Android: [Play Store Link to be inserted]\n\n🍎 Apple: [Apple Link to be inserted] `;
 
 // Webpage link
-export const WEBPAGE_LINK = `You can access the webpage here: https://xy3-web3.vercel.app/`;
+const WEBPAGE_LINK = `You can access the webpage here: https://xy3-web3.vercel.app/`;
 
 const getCommandListString = (commandsList) => {
   return commandsList
@@ -109,4 +109,19 @@ const HELP_GAME_SECTION = `🎲 Game:\n${HELP_GAME_COMMANDS_LIST}\n\n`;
 
 const HELP_SECTION = `❓ Help:\n\\- /${COMMANDS.HELP}: Get available commands for the bot`;
 
-export const HELP_MESSAGE = `${HELP_HEADER}\n\n${HELP_PING_SECTION}${HELP_TOKEN_SECTION}${HELP_GAME_SECTION}${HELP_SECTION}`;
+const HELP_MESSAGE = `${HELP_HEADER}\n\n${HELP_PING_SECTION}${HELP_TOKEN_SECTION}${HELP_GAME_SECTION}${HELP_SECTION}`;
+
+module.exports = {
+  COMMANDS,
+  CACHE_KEYS,
+  INTRO_MESSAGE,
+  PING_REPLY,
+  GAME_ADDRESS_REPLY,
+  INSTALL_LINKS,
+  WEBPAGE_LINK,
+  HELP_MESSAGE,
+  tokenCommands,
+  gameCommands,
+  returnTokenPrice,
+  returnTokenSupply,
+};
