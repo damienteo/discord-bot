@@ -22,6 +22,19 @@ const initialReplyObject = {
 
 exports.handler = async (event) => {
   console.log("------------INCOMING REQUEST---------------");
+  console.log({ event });
+
+  if (
+    event["detail-type"] === "Scheduled Event" &&
+    event.source === "aws.events"
+  ) {
+    console.log("AWS EventBridge Ping");
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ type: 1 }),
+    };
+  }
+
   // Checking signature (requirement 1.)
   // Your public key can be found on your application in the Developer Portal
   const PUBLIC_KEY = process.env.PUBLIC_KEY;
@@ -90,13 +103,6 @@ exports.handler = async (event) => {
         ...initialReplyObject,
         data: { content: PING_REPLY },
       };
-
-      const nextReplyObject = {
-        // Note the absence of statusCode
-        type: 4, // This type stands for answer with invocation shown
-        data: { content: "bar" },
-      };
-      console.log({ replyObject, nextReplyObject });
       await axios.post(interactionUrl, replyObject);
       return JSON.stringify(replyObject);
     case COMMANDS.PRICE:
